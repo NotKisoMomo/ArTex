@@ -1,4 +1,4 @@
-# ArTex — Roblox Game Framework
+# ArTex - The New Knit
 
 [![Static Badge](https://img.shields.io/badge/build-v1.0.0-black)](https://github.com/TheRealKr3ative)
 ![Static Badge](https://img.shields.io/badge/stability-stable-green)
@@ -101,7 +101,9 @@ Place the `ArTex` folder into `ReplicatedStorage`. Require it from your server a
 local ArTex = require(game:GetService("ReplicatedStorage").ArTex)
 ```
 
-ArTex requires **Fabrik** and **Schema** as peer dependencies. Place both in `ReplicatedStorage` and pass them into `ArTex.configure()`.
+**Schema** and **Fabrik** come pre-installed with ArTex. No configuration needed — they are always available on `ctx.Packages.Schema` and `ctx.Packages.Fabrik` without any `ArTex.Inside()` call.
+
+`NetworkManager` and `NetworkController` are required and must be passed into `ArTex.configure()`. How you implement them is entirely up to you — you can use ArTex's built-in Schema and Fabrik interfaces, a third-party networking library like BridgeNet2, or raw RemoteEvents. ArTex is agnostic to the implementation and simply injects whatever you provide.
 
 ---
 
@@ -115,11 +117,10 @@ local ServerStorage     = game:GetService("ServerStorage")
 local ArTex = require(ReplicatedStorage.ArTex)
 
 ArTex.configure({
-    Schema = require(ReplicatedStorage.Shared.Packages.Schema),
-    Fabrik = require(ReplicatedStorage.Shared.Packages.Fabrik),
+    -- Schema and Fabrik are pre-installed, no need to pass them in
 
-    NetworkManager    = require(ServerStorage.Modules.Network.NetworkManager),
-    NetworkController = require(ReplicatedStorage.Client.Modules.Network.NetworkController),
+    NetworkManager    = require(ServerStorage.Modules.Network.NetworkManager),    -- required
+    NetworkController = require(ReplicatedStorage.Client.Modules.Network.NetworkController), -- required
     Manifest          = require(ReplicatedStorage.Shared.Modules.Manifests),
 
     Verbosity = "trace",
@@ -142,7 +143,6 @@ ArTex.configure({
 })
 
 ArTex.Inside("Server", "Packages", "Keep", require(ServerStorage.Packages.Keep))
-ArTex.Inside("Shared", "Packages", "Fabrik", require(ReplicatedStorage.Shared.Packages.Fabrik))
 
 ArTex.priority({
     Services = { "DataService", "PlayerService" },
@@ -462,7 +462,7 @@ LocalCache.set("HP", 100)
 
 ### Networking
 
-ArTex does not ship a NetworkManager or NetworkController. You write your own using ArTex's Schema and Fabrik interfaces, pass them into `configure()`, and ArTex injects them into every module's ctx.
+ArTex does not ship a NetworkManager or NetworkController — they are required but the implementation is entirely yours. You can use ArTex's pre-installed Schema and Fabrik, a third-party library, or raw RemoteEvents. Pass them into `configure()` and ArTex injects them into every module's ctx.
 
 ```lua
 -- NetworkManager.lua — your code, built on ArTex
@@ -537,12 +537,14 @@ ArTex.configure(opts: ConfigureOptions)
 
 Must be called before any other ArTex method. Can only be called once unless `ArTex.reset()` has been called.
 
+Schema and Fabrik are pre-installed — do not pass them in. `NetworkManager` and `NetworkController` are required. How you implement them is up to you — use ArTex's built-in Schema and Fabrik, a third-party library, or raw RemoteEvents.
+
 | Field | Type | Default | Description |
 |---|---|---|---|
-| `Schema` | `Schema` | required | Schema library instance |
-| `Fabrik` | `Fabrik` | required | Fabrik library instance |
-| `NetworkManager` | `table?` | nil | Server-side network facilitator |
-| `NetworkController` | `table?` | nil | Client-side network facilitator |
+
+
+| `NetworkManager` | `table` | required | Server-side network facilitator |
+| `NetworkController` | `table` | required | Client-side network facilitator |
 | `Manifest` | `table?` | nil | Injected as `ctx.Manifest` |
 | `ContextStructure` | `table` | required | Folder structure definition |
 | `Verbosity` | `string` | `"warn"` | `"trace"` \| `"warn"` \| `"error"` \| `"silent"` |
@@ -552,8 +554,6 @@ Must be called before any other ArTex method. Can only be called once unless `Ar
 
 ```lua
 ArTex.configure({
-    Schema = Schema,
-    Fabrik = Fabrik,
 
     NetworkManager    = NetworkManager,
     NetworkController = NetworkController,
