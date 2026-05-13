@@ -62,7 +62,7 @@ Full documentation lives in the [Wiki](https://github.com/TheRealKr3ative/ArTex/
 | X | [TotallyNotKr3ative](https://x.com/TheRealKr3ative) |
 | Email | [TheRealKr3ative@gmail.com](mailto:TheRealKr3ative@gmail.com) |
 
-*Built by [Plinko Labs](https://github.com/NotKisoMomo)*
+*Built by [Plinko Labs](https://github.com/Plinko-Labs) / [Kiso](https://github.com/NotKisoMomo)
 
 ---
 Last Updated : May 13th 2026
