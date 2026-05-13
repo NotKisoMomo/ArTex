@@ -64,7 +64,7 @@ Full documentation lives in the [Wiki](https://github.com/TheRealKr3ative/ArTex/
 
 *Built by [Plinko Labs](https://github.com/Plinko-Labs) / [Kiso](https://github.com/NotKisoMomo)*
 
-*The name ArTex was resolved from the `Architecture`. Extracting `Arc` and `Techture` and rewriting them.*
+*The name ArTex was resolved from the word `Architecture`. Extracting `Arc` and `Techture` and rewriting them.*
 ---
 Last Updated : May 13th 2026
 ---
